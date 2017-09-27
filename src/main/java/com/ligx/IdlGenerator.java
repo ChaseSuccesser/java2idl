@@ -188,5 +188,9 @@ public class IdlGenerator {
         }
         return null;
     }
+
+    public static void main(String[] args) {
+        IdlGenerator.generateIdl("/Users/lgx/dev/idl-generator-test/demo.thrift", "com.ligx");
+    }
 }
 
