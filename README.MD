@@ -13,7 +13,7 @@
 ``` java
 public class GenerateIdl {
     public static void main(String[] args) {
-        IdlGenerator.generateIdl("/Users/lgx/dev/idl-generator-test/demo.thrift", "com.meituan.iflight.agent.domain");
+        IdlGenerator.generateIdl("/Users/lgx/demo.thrift", "com.ligxx");
     }
 }
 ```
