@@ -102,13 +102,17 @@ public class IdlGenerator {
 
             StringBuilder sb = new StringBuilder();
 
-            Type rawType = pType.getRawType();                // getRawType()获取Map<String, String>的Map
+            Type rawType = pType.getRawType();
             sb.append(mapType(rawType)).append("<");
 
-            Type[] typeArgs = pType.getActualTypeArguments(); // getActualTypeArguments()获取Map<String, String>中的两个String
+            Type[] typeArgs = pType.getActualTypeArguments();
             for (Type typeArg : typeArgs) {
-                String thriftType = mapType(typeArg);
-                sb.append(thriftType).append(",");
+                if(typeArg instanceof ParameterizedType){
+                    sb.append(parseType(typeArg));
+                } else {
+                    String thriftType = mapType(typeArg);
+                    sb.append(thriftType).append(",");
+                }
             }
             return sb.toString().substring(0, sb.length() - 1) + ">";
         } else {
@@ -118,8 +122,8 @@ public class IdlGenerator {
     }
 
     private static String mapType(Type type) {
-        Class clazz = (Class) type;   // Type转Class应该用强转的方式，不要用type.getClass()
-        if (clazz == byte.class) {    // Class比较相等性，既可以用==也可以用equals()
+        Class clazz = (Class) type;
+        if (clazz == byte.class) {
             return "byte";
         } else if (clazz == short.class) {
             return "i16";
@@ -140,7 +144,7 @@ public class IdlGenerator {
         } else if (clazz == Set.class) {
             return "set";
         } else {
-            return "undefine";
+            return clazz.getSimpleName();
         }
     }
 
