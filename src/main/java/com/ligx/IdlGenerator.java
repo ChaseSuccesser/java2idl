@@ -17,6 +17,8 @@ import java.util.*;
  */
 public class IdlGenerator {
 
+    private static final List<Class> clazzes = new ArrayList<>();
+
     /**
      * 生成idl文件
      *
@@ -41,6 +43,7 @@ public class IdlGenerator {
             return;
         }
 
+        // 收集带有idl注解的类映射的idl内容
         StringBuilder allIdl = new StringBuilder(500);
         for (Class clazz : classSet) {
             boolean isIdlPresent = clazz.isAnnotationPresent(Idl.class);
@@ -49,6 +52,13 @@ public class IdlGenerator {
             }
             String thriftStruct = generateStruct(clazz);
             allIdl.append(thriftStruct);
+        }
+
+        while (clazzes.size() > 0) {
+            for (Iterator<Class> it = clazzes.iterator(); it.hasNext(); ) {
+                allIdl.append(generateStruct(it.next()));
+                it.remove();
+            }
         }
 
         try {
@@ -107,7 +117,7 @@ public class IdlGenerator {
 
             Type[] typeArgs = pType.getActualTypeArguments();
             for (Type typeArg : typeArgs) {
-                if(typeArg instanceof ParameterizedType){
+                if (typeArg instanceof ParameterizedType) {
                     sb.append(parseType(typeArg));
                 } else {
                     String thriftType = mapType(typeArg);
@@ -144,6 +154,7 @@ public class IdlGenerator {
         } else if (clazz == Set.class) {
             return "set";
         } else {
+            clazzes.add(clazz);
             return clazz.getSimpleName();
         }
     }
