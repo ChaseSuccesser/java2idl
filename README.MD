@@ -1,5 +1,22 @@
 # 使用方式
-`IdlGenerator.generateIdl("/Users/lgx/dev/idl-generator-test/demo.thrift", "com.ligx");`
+- git clone https://github.com/ChaseSuccesser/java2idl.git
+- mvn clean install
+- 在项目中引入:
+```
+<dependency>
+    <groupId>com.ligx</groupId>
+    <artifactId>java2idl</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+使用:
+``` java
+public class GenerateIdl {
+    public static void main(String[] args) {
+        IdlGenerator.generateIdl("/Users/lgx/dev/idl-generator-test/demo.thrift", "com.meituan.iflight.agent.domain");
+    }
+}
+```
 
 > 第一个参数是thrift文件存储位置。后面的参数是要扫描的包，可以有多个。
 
