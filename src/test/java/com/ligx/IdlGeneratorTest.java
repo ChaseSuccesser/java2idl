@@ -15,4 +15,10 @@ public class IdlGeneratorTest {
         IdlGenerator.generateIdl("/Users/lgx/dev/idl-generator-test/demo.thrift", "com.ligx");
     }
 
+    @Test
+    public void test() {
+        Class clazz = int.class;
+
+        System.out.println(clazz == int.class);
+    }
 }

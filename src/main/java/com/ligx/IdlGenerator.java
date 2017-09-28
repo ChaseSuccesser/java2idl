@@ -75,14 +75,12 @@ public class IdlGenerator {
         if (fields == null || fields.length == 0) {
             return null;
         }
-        for (int i = 1; i <= fields.length; i++) {
-            Field field = fields[--i];
+        int i = 1;
+        for (Field field : fields) {
             Type fieldType = field.getGenericType();
             String thriftType = parseType(fieldType);
-            sb.append("    ").append(i).append(": ").append("optional ").append(thriftType).append(field.getName()).append(";");
-            if (i < fields.length) {
-                sb.append("\n");
-            }
+            sb.append("    ").append(i).append(": ").append("optional ").append(thriftType).append(" ").append(field.getName()).append(";").append("\n");
+            i += 1;
         }
         sb.append("}").append("\n");
         return sb.toString();
@@ -104,25 +102,24 @@ public class IdlGenerator {
 
             StringBuilder sb = new StringBuilder();
 
-            Class rawClass = pType.getRawType().getClass();   // getRawType()获取Map<String, String>的Map
-            sb.append(mapType(rawClass)).append("<");
+            Type rawType = pType.getRawType();                // getRawType()获取Map<String, String>的Map
+            sb.append(mapType(rawType)).append("<");
 
             Type[] typeArgs = pType.getActualTypeArguments(); // getActualTypeArguments()获取Map<String, String>中的两个String
             for (Type typeArg : typeArgs) {
-                Class classArg = typeArg.getClass();
-                String thriftType = mapType(classArg);
+                String thriftType = mapType(typeArg);
                 sb.append(thriftType).append(",");
             }
-            sb.append(sb.toString().substring(0, sb.length() - 1)).append(">");
-            return sb.toString();
+            return sb.toString().substring(0, sb.length() - 1) + ">";
         } else {
-            Class fieldClass = type.getClass();
+            Class fieldClass = (Class) type;
             return mapType(fieldClass);
         }
     }
 
-    private static String mapType(Class clazz) {
-        if (clazz == byte.class) {
+    private static String mapType(Type type) {
+        Class clazz = (Class) type;   // Type转Class应该用强转的方式，不要用type.getClass()
+        if (clazz == byte.class) {    // Class比较相等性，既可以用==也可以用equals()
             return "byte";
         } else if (clazz == short.class) {
             return "i16";
