@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -17,7 +18,7 @@ import java.util.*;
  */
 public class IdlGenerator {
 
-    private static final List<Class> clazzes = new ArrayList<>();
+    private static final Set<Class> clazzes = new HashSet<>();
 
     /**
      * 生成idl文件
@@ -87,6 +88,9 @@ public class IdlGenerator {
         }
         int i = 1;
         for (Field field : fields) {
+            if(Modifier.isStatic(field.getModifiers())){
+                continue;
+            }
             Type fieldType = field.getGenericType();
             String thriftType = parseType(fieldType);
             sb.append("    ").append(i).append(": ").append("optional ").append(thriftType).append(" ").append(field.getName()).append(";").append("\n");
