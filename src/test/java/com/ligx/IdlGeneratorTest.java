@@ -2,6 +2,8 @@ package com.ligx;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,6 +21,10 @@ public class IdlGeneratorTest {
     public void test() {
         Class clazz = int.class;
 
-        System.out.println(clazz == int.class);
+        Date date = new Date();
+
+        Integer i = 100000;
+
+        System.out.println(i.getClass() == Integer.class);
     }
 }

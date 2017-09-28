@@ -133,17 +133,17 @@ public class IdlGenerator {
 
     private static String mapType(Type type) {
         Class clazz = (Class) type;
-        if (clazz == byte.class) {
+        if (clazz == byte.class || clazz == Byte.class) {
             return "byte";
-        } else if (clazz == short.class) {
+        } else if (clazz == short.class || clazz == Short.class) {
             return "i16";
-        } else if (clazz == int.class) {
+        } else if (clazz == int.class || clazz == Integer.class) {
             return "i32";
-        } else if (clazz == long.class) {
+        } else if (clazz == long.class || clazz == Long.class) {
             return "i64";
-        } else if (clazz == double.class) {
+        } else if (clazz == double.class || clazz == Double.class) {
             return "double";
-        } else if (clazz == boolean.class) {
+        } else if (clazz == boolean.class || clazz == Boolean.class) {
             return "bool";
         } else if (clazz == String.class) {
             return "string";
@@ -154,9 +154,20 @@ public class IdlGenerator {
         } else if (clazz == Set.class) {
             return "set";
         } else {
-            clazzes.add(clazz);
+            if(isRecordClass(clazz)){
+                clazzes.add(clazz);
+            } else {
+                System.err.println("nonsupport " + clazz.getName());
+            }
             return clazz.getSimpleName();
         }
+    }
+
+    private static boolean isRecordClass(Class clazz) {
+        if(clazz.getName().startsWith("java.")){
+            return false;
+        }
+        return true;
     }
 
     /**
