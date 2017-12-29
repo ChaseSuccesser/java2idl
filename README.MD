@@ -1,6 +1,6 @@
 # 使用方式
-- git clone https://github.com/ChaseSuccesser/java2idl.git
-- mvn clean install
+- `git clone https://github.com/ChaseSuccesser/java2idl.git`
+- `mvn clean install`
 - 在项目中引入:
 ```
 <dependency>
@@ -9,7 +9,7 @@
     <version>1.0.0</version>
 </dependency>
 ```
-使用:
+- 写个main类来使用:
 ``` java
 public class GenerateIdl {
     public static void main(String[] args) {
@@ -22,4 +22,4 @@ public class GenerateIdl {
 
 # 特点
 1. 支持字段类型是复杂的嵌套类型。例如`Map<String, List<List<String>>>`
-2. 针对POJO内部引用其他POJO的情况，只需要在最外层加上`@Idl`注解即可。
+2. 针对POJO内部引用其他POJO的情况，只需要在最外层的类加上`@Idl`注解即可。
