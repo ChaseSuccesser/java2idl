@@ -158,7 +158,7 @@ public class IdlGenerator {
         } else if (clazz == Set.class) {
             return "set";
         } else {
-            if(isRecordClass(clazz)){
+            if(needRecordClass(clazz)){
                 clazzes.add(clazz);
             } else {
                 System.err.println("nonsupport " + clazz.getName());
@@ -167,7 +167,7 @@ public class IdlGenerator {
         }
     }
 
-    private static boolean isRecordClass(Class clazz) {
+    private static boolean needRecordClass(Class clazz) {
         if(clazz.getName().startsWith("java.")){
             return false;
         }
@@ -189,13 +189,12 @@ public class IdlGenerator {
                 System.err.println("packageUrl is null!");
                 return null;
             }
-
             String absolutePackagePath = packageUrl.getPath();
 
             File packageFile = new File(absolutePackagePath);
             File[] files = packageFile.listFiles();
             if (files == null || files.length == 0) {
-                System.err.println("file list is empty!");
+                System.err.println("java .class file list is empty!");
                 return null;
             }
             List<Class> classList = new ArrayList<>(files.length);
